@@ -1,8 +1,5 @@
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -11,17 +8,7 @@ import java.util.stream.Collectors;
  **/
 public class Contest213 {
     public static void main(String[] args) {
-        int[] heights = {4, 2, 7, 6, 9, 14, 12};
-        int bricks = 5, ladders = 1;
-        PriorityQueue<Integer> queue = new PriorityQueue<>();
-        queue.add(-1);
-        queue.add(-2);
-        System.out.println(queue.poll());
-        /**
-         * [4,2,7,6,9,14,12]
-         * 5
-         * 1
-         */
+        System.out.println((int) 3.6);
     }
 
     public boolean canFormArray(int[] arr, int[][] pieces) {
@@ -93,7 +80,38 @@ public class Contest213 {
     }
 
     public String kthSmallestPath(int[] destination, int k) {
-        return "";
+        StringBuilder s = new StringBuilder();
+        int row = destination[0], col = destination[1];
+        int[][] dp = new int[row + col][row];
+        dp[0][0] = 1;
+        for (int i = 1; i < row + col; i++) {
+            dp[i][0] = 1;
+            for (int j = 1; j <= i && j < col; j++) {
+                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+            }
+        }
+        while (row > 0 && col > 0) {
+            int low = dp[row + col - 1][col - 1];
+            if(k>low){
+                s.append('V');
+                k-=low;
+                row--;
+            }else{
+                col--;
+                s.append('H');
+            }
+        }
+        if (row == 0) {
+            for (int i = 0; i < col; i++) {
+                s.append('V');
+            }
+        }
+        if (col == 0) {
+            for (int i = 0; i < row; i++) {
+                s.append('H');
+            }
+        }
+        return s.toString();
     }
-}
 
+}
